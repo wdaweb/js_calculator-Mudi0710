@@ -27,20 +27,25 @@
       line-height: 30px;
     }
 
+    tr:nth-child(1) {
+      display: none;
+    }
+
     tr:nth-child(1) td,
-    tr:nth-child(2) td {
+    tr:nth-child(2) td,
+    tr:nth-child(3) td {
       text-align: right;
       padding: 1px 2px;
     }
 
-    tr:nth-child(3) td:nth-child(2),
-    tr:nth-child(3) td:nth-child(3) {
+    tr:nth-child(4) td:nth-child(2),
+    tr:nth-child(4) td:nth-child(3) {
       font-size: 1.2rem;
       padding-top: 0px;
       padding-bottom: 2px;
     }
 
-    tr:nth-child(3) td:nth-child(4) {
+    tr:nth-child(4) td:nth-child(4) {
       font-size: .8rem;
       padding-top: 2px;
       padding-bottom: 0px;
@@ -51,6 +56,9 @@
 <body>
   <table>
     <tr>
+      <td colspan="4" id="math"></td>
+    </tr>
+    <tr>
       <td colspan="4" id="input"></td>
     </tr>
     <tr>
@@ -58,9 +66,9 @@
     </tr>
     <tr>
       <td>C</td>
-      <td>÷</td>
-      <td>×</td>
-      <td><i class="fa-solid fa-arrow-left"></i></td>
+      <td id="divided">÷</td>
+      <td id="multiply">×</td>
+      <td id="backspace"><i class="fa-solid fa-arrow-left"></i></td>
     </tr>
     <tr>
       <td>7</td>
@@ -85,6 +93,170 @@
       <td>.</td>
     </tr>
   </table>
+
+  <script>
+    const math = document.getElementById('math')
+    const input = document.getElementById('input')
+    const answer = document.getElementById('answer')
+    const divided = document.getElementById('divided')
+    const multiply = document.getElementById('multiply')
+    const backspace = document.getElementById('backspace')
+    const tds = document.querySelectorAll('td:not(#input):not(#answer)')
+    // let math = 0
+
+    // for (const td of tds) {
+    //   td.onclick = () => {
+    //     console.log(td.innerText)
+    //     const text = td.innerText
+
+    //     if (text === '=') {
+    //       // let divided = divided.replace('÷', '/')
+    //       // let multiply = divided.replace('×', '*')
+    //       answer.innerText = eval(input.innerText)
+    //     } else if (text === 'C') {
+    //       input.innerText = '0'
+    //     } else {
+    //       if (input.innerText === '0') {
+    //         input.innerText = text
+    //       } else {
+    //         input.innerText += text
+    //       }
+    //     }
+    //   }
+    // }
+
+    // 鍵盤事件
+    document.onkeydown = event => {
+      /*
+        按下 Enter 鍵（且 記錄列 沒有 ＝）
+        => 記錄列：先 加上 ＝
+        => 答案列：再 加總 運算列
+        => 運算列：最後 同步 答案列
+      */
+      if (event.key === 'Enter' && !input.innerText.includes('=')) {
+        input.innerText += '='
+        answer.innerText = eval(math.innerText)
+        math.innerText = answer.innerText
+      }
+      /*
+        按下 ESC 或 Delete 鍵
+        => 運算列：設為 空字串
+        => 記錄列：設為 空字串
+        => 答案列：設為 0
+      */
+      else if (event.key === 'Escape' || event.key === 'Delete') {
+        math.innerText = ''
+        input.innerText = ''
+        answer.innerText = '0'
+      }
+      /*
+        按下 退位 鍵
+        => 運算列：移除 最後一個字
+        => 記錄列：移除 最後一個字
+      */
+      else if (event.key === 'Backspace' && !input.innerText.includes('=')) {
+        math.innerText = math.innerText.substr(0, math.innerText.length - 1)
+        input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+      }
+      /*
+        按下 數字 鍵
+        （若 記錄列 有 = ）
+        => 運算列：等於 數字
+        => 記錄列：等於 數字
+        => 答案列：設為 0
+        （又若 記錄列 為 空字串 ）
+        => 運算列：等於 數字
+        => 記錄列：等於 數字
+        （又若 記錄列 為 其他狀況 ）
+        => 運算列：加上 數字
+        => 記錄列：加上 數字
+      */
+      else if (!isNaN(parseInt(event.key))) {
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      /*
+        按下 . 鍵
+        （若 記錄列 有 = ）
+        => 運算列：設為 0.
+        => 記錄列：設為 0.
+        => 答案列：設為 0.
+        （又若 記錄列 為 空字串 ）
+        => 運算列：設為 0.
+        => 記錄列：設為 0.
+        （又若 記錄列 沒有 . ）
+        => 運算列：加上 .
+        => 記錄列：加上 .
+      */
+      else if (event.key === '.') {
+        if (input.innerText.includes('=')) {
+          math.innerText = '0.'
+          input.innerText = '0.'
+          answer.innerText = '0.'
+        }
+        else if (input.innerText === '') {
+          math.innerText = '0.'
+          input.innerText = '0.'
+        } else if (!input.innerText.includes('.')) {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      /*
+        按下 + - * / 鍵
+        （若 記錄列 有 = ）
+        => 記錄列：先 移除 =
+        => 記錄列：再 同步 答案列
+        （同時若 記錄列 為 空字串 ）
+        => 運算列：等於 數字
+        => 記錄列：等於 數字
+          （或 按下 * 鍵）
+        ===> 運算列：加上 *
+        ===> 記錄列：加上 ×
+          （或 按下 / 鍵）
+        ===> 運算列：加上 /
+        ===> 記錄列：加上 ÷
+          （或 其他狀況）
+        ===> 運算列：加上 運算子
+        ===> 記錄列：加上 運算子
+      */
+      else if (
+        event.key === '+' ||
+        event.key === '-' ||
+        event.key === '*' ||
+        event.key === '/') {
+        if (input.innerText.includes('=')) {
+          input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+          input.innerText = answer.innerText
+        }
+        if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else if (event.key === '*') {
+          math.innerText += event.key
+          input.innerText += '×'
+        } else if (event.key === '/') {
+          math.innerText += event.key
+          input.innerText += '÷'
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+    }
+
+
+  </script>
 </body>
 
 </html>
