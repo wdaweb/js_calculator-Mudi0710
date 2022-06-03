@@ -133,9 +133,10 @@
         => 答案列：再 加總 運算列
         => 運算列：最後 同步 答案列
       */
-      if (event.key === 'Enter' && !input.innerText.includes('=')) {
+      if (event.key === 'Enter' && !input.innerText.includes('=') && input.innerText !== '') {
         input.innerText += '='
-        answer.innerText = eval(math.innerText)
+        // 處理浮點計算精度問題
+        answer.innerText = parseFloat(eval(math.innerText).toPrecision(12))
         math.innerText = answer.innerText
       }
       /*
@@ -194,7 +195,7 @@
         （又若 記錄列 為 空字串 ）
         => 運算列：設為 0.
         => 記錄列：設為 0.
-        （又若 記錄列 沒有 . ）
+        （又若 記錄列 最後一字 不為 . ）
         => 運算列：加上 .
         => 記錄列：加上 .
       */
@@ -203,11 +204,10 @@
           math.innerText = '0.'
           input.innerText = '0.'
           answer.innerText = '0.'
-        }
-        else if (input.innerText === '') {
+        } else if (input.innerText === '') {
           math.innerText = '0.'
           input.innerText = '0.'
-        } else if (!input.innerText.includes('.')) {
+        } else if (input.innerText.slice(-1) !== '.') {
           math.innerText += event.key
           input.innerText += event.key
         }
@@ -217,16 +217,13 @@
         （若 記錄列 有 = ）
         => 記錄列：先 移除 =
         => 記錄列：再 同步 答案列
-        （同時若 記錄列 為 空字串 ）
-        => 運算列：等於 數字
-        => 記錄列：等於 數字
-          （或 按下 * 鍵）
-        ===> 運算列：加上 *
-        ===> 記錄列：加上 ×
-          （或 按下 / 鍵）
+        （同時若 按下 * 鍵 且 記錄列 最後一字 不為 運算子 ）
+        => 運算列：加上 *
+        => 記錄列：加上 ×
+          （或 按下 / 鍵 且 記錄列 最後一字 不為 運算子 ）
         ===> 運算列：加上 /
         ===> 記錄列：加上 ÷
-          （或 其他狀況）
+          （或 按下 + - 鍵 且 記錄列 最後一字 不為 運算子 ）
         ===> 運算列：加上 運算子
         ===> 記錄列：加上 運算子
       */
@@ -239,23 +236,35 @@
           input.innerText = input.innerText.substr(0, input.innerText.length - 1)
           input.innerText = answer.innerText
         }
-        if (input.innerText === '') {
-          math.innerText = event.key
-          input.innerText = event.key
-        } else if (event.key === '*') {
+        if (
+          event.key === '*' &&
+          input.innerText.slice(-1) !== '+' &&
+          input.innerText.slice(-1) !== '-' &&
+          input.innerText.slice(-1) !== '×' &&
+          input.innerText.slice(-1) !== '÷'
+        ) {
           math.innerText += event.key
           input.innerText += '×'
-        } else if (event.key === '/') {
+        } else if (
+          event.key === '/' &&
+          input.innerText.slice(-1) !== '+' &&
+          input.innerText.slice(-1) !== '-' &&
+          input.innerText.slice(-1) !== '×' &&
+          input.innerText.slice(-1) !== '÷'
+        ) {
           math.innerText += event.key
           input.innerText += '÷'
-        } else {
+        } else if (
+          input.innerText.slice(-1) !== '+' &&
+          input.innerText.slice(-1) !== '-' &&
+          input.innerText.slice(-1) !== '×' &&
+          input.innerText.slice(-1) !== '÷'
+        ) {
           math.innerText += event.key
           input.innerText += event.key
         }
       }
     }
-
-
   </script>
 </body>
 
