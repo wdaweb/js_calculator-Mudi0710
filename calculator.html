@@ -27,9 +27,9 @@
       line-height: 30px;
     }
 
-    tr:nth-child(1) {
+    /* tr:nth-child(1) {
       display: none;
-    }
+    } */
 
     tr:nth-child(1) td,
     tr:nth-child(2) td,
@@ -56,79 +56,258 @@
 <body>
   <table>
     <tr>
-      <td colspan="4" id="math"></td>
+      <td id="math" colspan="4"></td>
     </tr>
     <tr>
-      <td colspan="4" id="input"></td>
+      <td id="input" colspan="4"></td>
     </tr>
     <tr>
-      <td colspan="4" id="answer">0</td>
+      <td id="answer" colspan="4">0</td>
     </tr>
     <tr>
-      <td>C</td>
-      <td id="divided">÷</td>
+      <td id="escape">C</td>
+      <td id="divide">÷</td>
       <td id="multiply">×</td>
       <td id="backspace"><i class="fa-solid fa-arrow-left"></i></td>
     </tr>
     <tr>
-      <td>7</td>
-      <td>8</td>
-      <td>9</td>
-      <td>-</td>
+      <td class="number">7</td>
+      <td class="number">8</td>
+      <td class="number">9</td>
+      <td id="minus">-</td>
     </tr>
     <tr>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
-      <td>+</td>
+      <td class="number">4</td>
+      <td class="number">5</td>
+      <td class="number">6</td>
+      <td id="plus">+</td>
     </tr>
     <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td rowspan="2">=</td>
+      <td class="number">1</td>
+      <td class="number">2</td>
+      <td class="number">3</td>
+      <td id="equals" rowspan="2">=</td>
     </tr>
     <tr>
-      <td colspan="2">0</td>
-      <td>.</td>
+      <td class="number" colspan="2">0</td>
+      <td id="dot">.</td>
     </tr>
   </table>
 
   <script>
+    // 抓取 運算列、顯示列、答案列
     const math = document.getElementById('math')
     const input = document.getElementById('input')
     const answer = document.getElementById('answer')
-    const divided = document.getElementById('divided')
-    const multiply = document.getElementById('multiply')
+    // 抓取 功能鈕、運算鈕
+    const escape = document.getElementById('escape')
     const backspace = document.getElementById('backspace')
-    const tds = document.querySelectorAll('td:not(#input):not(#answer)')
+    const equals = document.getElementById('equals')
+    const plus = document.getElementById('plus')
+    const minus = document.getElementById('minus')
+    const multiply = document.getElementById('multiply')
+    const divide = document.getElementById('divide')
+    // 抓取 數字鈕、浮點鈕
+    const numbers = document.querySelectorAll(".number")
+    const dot = document.getElementById('dot')
     // let math = 0
 
-    // for (const td of tds) {
-    //   td.onclick = () => {
-    //     console.log(td.innerText)
-    //     const text = td.innerText
-
-    //     if (text === '=') {
-    //       // let divided = divided.replace('÷', '/')
-    //       // let multiply = divided.replace('×', '*')
-    //       answer.innerText = eval(input.innerText)
-    //     } else if (text === 'C') {
-    //       input.innerText = '0'
-    //     } else {
-    //       if (input.innerText === '0') {
-    //         input.innerText = text
-    //       } else {
-    //         input.innerText += text
-    //       }
-    //     }
-    //   }
-    // }
+    // 滑鼠事件
+    /*
+      按下 = 鍵
+      （若 記錄列 沒有 ＝ 且 不為 空字串）
+      => 記錄列：先 加上 ＝
+      => 答案列：再 加總 運算列
+      => 運算列：最後 同步 答案列
+    */
+    equals.onclick = () => {
+      if (!input.innerText.includes('=') && input.innerText !== '') {
+        input.innerText += '='
+        // 處理浮點計算精度問題
+        answer.innerText = parseFloat(eval(math.innerText).toPrecision(12))
+        math.innerText = answer.innerText
+      }
+    }
+    /*
+      按下 C 鍵
+      => 運算列：設為 空字串
+      => 記錄列：設為 空字串
+      => 答案列：設為 0
+    */
+    escape.onclick = () => {
+      math.innerText = ''
+      input.innerText = ''
+      answer.innerText = '0'
+    }
+    /*
+      按下 退位 鍵
+      （ 若 記錄列 沒有 ＝）
+      => 運算列：移除 最後一個字
+      => 記錄列：移除 最後一個字
+    */
+    backspace.onclick = () => {
+      if (!input.innerText.includes('=')) {
+        math.innerText = math.innerText.substr(0, math.innerText.length - 1)
+        input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+      }
+    }
+    /*
+      按下 數字 鍵
+      （若 記錄列 有 = ）
+      => 運算列：等於 數字
+      => 記錄列：等於 數字
+      => 答案列：設為 0
+      （又若 記錄列 為 空字串 ）
+      => 運算列：等於 數字
+      => 記錄列：等於 數字
+      （又若 記錄列 為 其他狀況 ）
+      => 運算列：加上 數字
+      => 記錄列：加上 數字
+    */
+    for (const number of numbers) {
+      number.onclick = () => {
+        // console.log(number.innerText)
+        if (input.innerText.includes('=')) {
+          math.innerText = number.innerText
+          input.innerText = number.innerText
+          answer.innerText = 0
+        } else if (input.innerText === '') {
+          math.innerText = number.innerText
+          input.innerText = number.innerText
+        } else {
+          math.innerText += number.innerText
+          input.innerText += number.innerText
+        }
+      }
+    }
+    /*
+      按下 . 鍵
+      （若 記錄列 有 = ）
+      => 運算列：設為 0.
+      => 記錄列：設為 0.
+      => 答案列：設為 0.
+      （又若 記錄列 為 空字串 ）
+      => 運算列：設為 0.
+      => 記錄列：設為 0.
+      （又若 記錄列 最後一字 不為 . ）
+      => 運算列：加上 .
+      => 記錄列：加上 .
+    */
+    dot.onclick = () => {
+      if (input.innerText.includes('=')) {
+        math.innerText = '0.'
+        input.innerText = '0.'
+        answer.innerText = '0.'
+      } else if (input.innerText === '') {
+        math.innerText = '0.'
+        input.innerText = '0.'
+      } else if (input.innerText.slice(-1) !== '.') {
+        math.innerText += dot.innerText
+        input.innerText += dot.innerText
+      }
+    }
+    /*
+      按下 + 鍵
+      （若 記錄列 有 = ）
+      => 記錄列：先 移除 =
+      => 記錄列：再 同步 答案列
+      （同時若 最後一字 不為 運算子 ）
+      => 運算列：加上 +
+      => 記錄列：加上 +
+    */
+    plus.onclick = () => {
+      if (input.innerText.includes('=')) {
+        input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+        input.innerText = answer.innerText
+      }
+      if (
+        input.innerText.slice(-1) !== '+' &&
+        input.innerText.slice(-1) !== '-' &&
+        input.innerText.slice(-1) !== '×' &&
+        input.innerText.slice(-1) !== '÷'
+      ) {
+        math.innerText += plus.innerText
+        input.innerText += plus.innerText
+      }
+    }
+    /*
+      按下 - 鍵
+      （若 記錄列 有 = ）
+      => 記錄列：先 移除 =
+      => 記錄列：再 同步 答案列
+      （同時若 最後一字 不為 運算子 ）
+      => 運算列：加上 -
+      => 記錄列：加上 -
+    */
+    minus.onclick = () => {
+      if (input.innerText.includes('=')) {
+        input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+        input.innerText = answer.innerText
+      }
+      if (
+        input.innerText.slice(-1) !== '+' &&
+        input.innerText.slice(-1) !== '-' &&
+        input.innerText.slice(-1) !== '×' &&
+        input.innerText.slice(-1) !== '÷'
+      ) {
+        math.innerText += minus.innerText
+        input.innerText += minus.innerText
+      }
+    }
+    /*
+      按下 × 鍵
+      （若 記錄列 有 = ）
+      => 記錄列：先 移除 =
+      => 記錄列：再 同步 答案列
+      （同時若 記錄列 最後一字 不為 運算子 ）
+      => 運算列：加上 *
+      => 記錄列：加上 ×
+    */
+    multiply.onclick = () => {
+      if (input.innerText.includes('=')) {
+        input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+        input.innerText = answer.innerText
+      }
+      if (
+        input.innerText.slice(-1) !== '+' &&
+        input.innerText.slice(-1) !== '-' &&
+        input.innerText.slice(-1) !== '×' &&
+        input.innerText.slice(-1) !== '÷'
+      ) {
+        math.innerText += '*'
+        input.innerText += multiply.innerText
+      }
+    }
+    /*
+      按下 ÷ 鍵
+      （若 記錄列 有 = ）
+      => 記錄列：先 移除 =
+      => 記錄列：再 同步 答案列
+      （同時若 記錄列 最後一字 不為 運算子 ）
+      => 運算列：加上 /
+      => 記錄列：加上 ÷
+    */
+    divide.onclick = () => {
+      if (input.innerText.includes('=')) {
+        input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+        input.innerText = answer.innerText
+      }
+      if (
+        input.innerText.slice(-1) !== '+' &&
+        input.innerText.slice(-1) !== '-' &&
+        input.innerText.slice(-1) !== '×' &&
+        input.innerText.slice(-1) !== '÷'
+      ) {
+        math.innerText += '/'
+        input.innerText += divide.innerText
+      }
+    }
 
     // 鍵盤事件
     document.onkeydown = event => {
       /*
-        按下 Enter 鍵（且 記錄列 沒有 ＝）
+        按下 Enter 鍵
+        （ 若 記錄列 沒有 ＝ 且 不為 空字串）
         => 記錄列：先 加上 ＝
         => 答案列：再 加總 運算列
         => 運算列：最後 同步 答案列
@@ -152,6 +331,7 @@
       }
       /*
         按下 退位 鍵
+        （ 若 記錄列 沒有 ＝）
         => 運算列：移除 最後一個字
         => 記錄列：移除 最後一個字
       */
