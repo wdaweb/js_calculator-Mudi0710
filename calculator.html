@@ -8,36 +8,112 @@
   <link rel="stylesheet" href="./CSS/all.css">
   <title>計算機</title>
   <style>
+    /* 鎖住反白 */
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+      background: url('./images/background.jpg') fixed no-repeat center center/cover;
+    }
+
+    /* 設定 計算機 外觀樣式 */
     table {
+      width: 150px;
+      height: 240px;
+      padding: 10px;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      background: rgb(255, 255, 255);
+      border-radius: 10px;
+      box-shadow:
+        3px 3px 7px rgba(0, 0, 0, 0.8);
     }
 
-    table,
-    td {
-      border: 1px solid #000;
+    /* 改變 按鈕區 滑鼠游標圖示 */
+    tr:nth-child(4),
+    tr:nth-child(5),
+    tr:nth-child(6),
+    tr:nth-child(7),
+    tr:nth-child(8) {
+      cursor: pointer;
     }
 
-    td {
+    /* 隱藏運算列 */
+    tr:nth-child(1) {
+      display: none;
+    }
+
+    /* 設定 運算列、紀錄列、答案列 樣式 */
+    tr:nth-child(1) td,
+    tr:nth-child(2) td,
+    tr:nth-child(3) td {
+      box-sizing: border-box;
+      text-align: right;
+      padding: 1px 2px;
+      border-radius: 5px;
+      background: rgb(245, 245, 245);
+      /* border: 1px solid rgb(220, 220, 220); */
+      box-shadow:
+        0 0 0 rgba(0, 0, 0, .4),
+        0 0 0 rgba(236, 236, 243, .9),
+        inset -1px -1px 4px rgba(236, 236, 243, .9),
+        inset 1px 1px 2px rgba(0, 0, 0, .4);
+    }
+
+    tr:nth-child(1) td,
+    tr:nth-child(2) td {
+      height: 15px;
+      line-height: 12px;
+      font-size: 0.5rem;
+      color: gray;
+    }
+
+    tr:nth-child(3) td {
+      height: 30px;
+      line-height: 30px;
+      color: gray;
+    }
+
+    /* 設定 按鈕 樣式 */
+    tr:nth-child(4) td,
+    tr:nth-child(5) td,
+    tr:nth-child(6) td,
+    tr:nth-child(7) td,
+    tr:nth-child(8) td {
+      box-sizing: border-box;
       width: 30px;
       height: 30px;
       text-align: center;
       line-height: 30px;
+      border-radius: 5px;
+      background: rgb(255, 255, 255);
+      color: rgb(105, 105, 105);
+      box-shadow:
+        1px 1px 2px rgba(0, 0, 0, .4),
+        -1px -1px 4px rgba(236, 236, 243, .9),
+        inset 0 0 0 rgba(236, 236, 243, .9),
+        inset 0 0 0 rgba(0, 0, 0, .4);
+      transition: .1s;
     }
 
-    /* tr:nth-child(1) {
-      display: none;
-    } */
-
-    tr:nth-child(1) td,
-    tr:nth-child(2) td,
-    tr:nth-child(3) td {
-      text-align: right;
-      padding: 1px 2px;
+    /* 設定 按鈕 按下 樣式 */
+    tr:nth-child(4) td:active,
+    tr:nth-child(5) td:active,
+    tr:nth-child(6) td:active,
+    tr:nth-child(7) td:active,
+    tr:nth-child(8) td:active {
+      background: rgb(236, 236, 243);
+      box-shadow:
+        0 0 0 rgba(0, 0, 0, .4),
+        0 0 0 rgba(236, 236, 243, .9),
+        inset -1px -1px 4px rgba(236, 236, 243, .9),
+        inset 1px 1px 2px rgba(0, 0, 0, .4);
     }
 
+    /* 設定 × ÷ 按鈕 樣式*/
     tr:nth-child(4) td:nth-child(2),
     tr:nth-child(4) td:nth-child(3) {
       font-size: 1.2rem;
@@ -45,6 +121,7 @@
       padding-bottom: 2px;
     }
 
+    /* 設定 箭頭 按鈕 樣式 */
     tr:nth-child(4) td:nth-child(4) {
       font-size: .8rem;
       padding-top: 2px;
@@ -305,6 +382,15 @@
 
     // 鍵盤事件
     document.onkeydown = event => {
+      // escape.style.background = 'rgb(236, 236, 243)'
+      // backspace.style.background = 'rgb(236, 236, 243)'
+      // equals.style.background = 'rgb(236, 236, 243)'
+      // plus.style.background = 'rgb(236, 236, 243)'
+      // minus.style.background = 'rgb(236, 236, 243)'
+      // multiply.style.background = 'rgb(236, 236, 243)'
+      // divide.style.background = 'rgb(236, 236, 243)'
+      // numbers.style.background = 'rgb(236, 236, 243)'
+      // dot.style.background = 'rgb(236, 236, 243)'
       /*
         按下 Enter 鍵
         （ 若 記錄列 沒有 ＝ 且 不為 空字串）
