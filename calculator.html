@@ -148,25 +148,25 @@
       <td id="backspace"><i class="fa-solid fa-arrow-left"></i></td>
     </tr>
     <tr>
-      <td class="number">7</td>
-      <td class="number">8</td>
-      <td class="number">9</td>
+      <td id="seven" class="number">7</td>
+      <td id="eight" class="number">8</td>
+      <td id="nine" class="number">9</td>
       <td id="minus">-</td>
     </tr>
     <tr>
-      <td class="number">4</td>
-      <td class="number">5</td>
-      <td class="number">6</td>
+      <td id="four" class="number">4</td>
+      <td id="five" class="number">5</td>
+      <td id="six" class="number">6</td>
       <td id="plus">+</td>
     </tr>
     <tr>
-      <td class="number">1</td>
-      <td class="number">2</td>
-      <td class="number">3</td>
+      <td id="one" class="number">1</td>
+      <td id="two" class="number">2</td>
+      <td id="three" class="number">3</td>
       <td id="equals" rowspan="2">=</td>
     </tr>
     <tr>
-      <td class="number" colspan="2">0</td>
+      <td id="zero" class="number" colspan="2">0</td>
       <td id="dot">.</td>
     </tr>
   </table>
@@ -185,6 +185,16 @@
     const multiply = document.getElementById('multiply')
     const divide = document.getElementById('divide')
     // 抓取 數字鈕、浮點鈕
+    const one = document.getElementById('one')
+    const two = document.getElementById('two')
+    const three = document.getElementById('three')
+    const four = document.getElementById('four')
+    const five = document.getElementById('five')
+    const six = document.getElementById('six')
+    const seven = document.getElementById('seven')
+    const eight = document.getElementById('eight')
+    const nine = document.getElementById('nine')
+    const zero = document.getElementById('zero')
     const numbers = document.querySelectorAll(".number")
     const dot = document.getElementById('dot')
     // let math = 0
@@ -382,15 +392,6 @@
 
     // 鍵盤事件
     document.onkeydown = event => {
-      // escape.style.background = 'rgb(236, 236, 243)'
-      // backspace.style.background = 'rgb(236, 236, 243)'
-      // equals.style.background = 'rgb(236, 236, 243)'
-      // plus.style.background = 'rgb(236, 236, 243)'
-      // minus.style.background = 'rgb(236, 236, 243)'
-      // multiply.style.background = 'rgb(236, 236, 243)'
-      // divide.style.background = 'rgb(236, 236, 243)'
-      // numbers.style.background = 'rgb(236, 236, 243)'
-      // dot.style.background = 'rgb(236, 236, 243)'
       /*
         按下 Enter 鍵
         （ 若 記錄列 沒有 ＝ 且 不為 空字串）
@@ -403,6 +404,11 @@
         // 處理浮點計算精度問題
         answer.innerText = parseFloat(eval(math.innerText).toPrecision(12))
         math.innerText = answer.innerText
+        equals.style.background = 'rgb(236, 236, 243)'
+        equals.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
       }
       /*
         按下 ESC 或 Delete 鍵
@@ -414,6 +420,11 @@
         math.innerText = ''
         input.innerText = ''
         answer.innerText = '0'
+        escape.style.background = 'rgb(236, 236, 243)'
+        escape.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
       }
       /*
         按下 退位 鍵
@@ -424,6 +435,11 @@
       else if (event.key === 'Backspace' && !input.innerText.includes('=')) {
         math.innerText = math.innerText.substr(0, math.innerText.length - 1)
         input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+        backspace.style.background = 'rgb(236, 236, 243)'
+        backspace.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
       }
       /*
         按下 數字 鍵
@@ -438,7 +454,183 @@
         => 運算列：加上 數字
         => 記錄列：加上 數字
       */
-      else if (!isNaN(parseInt(event.key))) {
+      else if (event.key === '1') {
+        one.style.background = 'rgb(236, 236, 243)'
+        one.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '2') {
+        two.style.background = 'rgb(236, 236, 243)'
+        two.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '3') {
+        three.style.background = 'rgb(236, 236, 243)'
+        three.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '4') {
+        four.style.background = 'rgb(236, 236, 243)'
+        four.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '5') {
+        five.style.background = 'rgb(236, 236, 243)'
+        five.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '6') {
+        six.style.background = 'rgb(236, 236, 243)'
+        six.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '7') {
+        seven.style.background = 'rgb(236, 236, 243)'
+        seven.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '8') {
+        eight.style.background = 'rgb(236, 236, 243)'
+        eight.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '9') {
+        nine.style.background = 'rgb(236, 236, 243)'
+        nine.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          math.innerText = event.key
+          input.innerText = event.key
+          answer.innerText = 0
+        }
+        else if (input.innerText === '') {
+          math.innerText = event.key
+          input.innerText = event.key
+        } else {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '0') {
+        zero.style.background = 'rgb(236, 236, 243)'
+        zero.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
         if (input.innerText.includes('=')) {
           math.innerText = event.key
           input.innerText = event.key
@@ -466,6 +658,11 @@
         => 記錄列：加上 .
       */
       else if (event.key === '.') {
+        dot.style.background = 'rgb(236, 236, 243)'
+        dot.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
         if (input.innerText.includes('=')) {
           math.innerText = '0.'
           input.innerText = '0.'
@@ -493,34 +690,17 @@
         ===> 運算列：加上 運算子
         ===> 記錄列：加上 運算子
       */
-      else if (
-        event.key === '+' ||
-        event.key === '-' ||
-        event.key === '*' ||
-        event.key === '/') {
+      else if (event.key === '+') {
+        plus.style.background = 'rgb(236, 236, 243)'
+        plus.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
         if (input.innerText.includes('=')) {
           input.innerText = input.innerText.substr(0, input.innerText.length - 1)
           input.innerText = answer.innerText
         }
         if (
-          event.key === '*' &&
-          input.innerText.slice(-1) !== '+' &&
-          input.innerText.slice(-1) !== '-' &&
-          input.innerText.slice(-1) !== '×' &&
-          input.innerText.slice(-1) !== '÷'
-        ) {
-          math.innerText += event.key
-          input.innerText += '×'
-        } else if (
-          event.key === '/' &&
-          input.innerText.slice(-1) !== '+' &&
-          input.innerText.slice(-1) !== '-' &&
-          input.innerText.slice(-1) !== '×' &&
-          input.innerText.slice(-1) !== '÷'
-        ) {
-          math.innerText += event.key
-          input.innerText += '÷'
-        } else if (
           input.innerText.slice(-1) !== '+' &&
           input.innerText.slice(-1) !== '-' &&
           input.innerText.slice(-1) !== '×' &&
@@ -530,7 +710,196 @@
           input.innerText += event.key
         }
       }
+      else if (event.key === '-') {
+        minus.style.background = 'rgb(236, 236, 243)'
+        minus.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+          input.innerText = answer.innerText
+        }
+        if (
+          input.innerText.slice(-1) !== '+' &&
+          input.innerText.slice(-1) !== '-' &&
+          input.innerText.slice(-1) !== '×' &&
+          input.innerText.slice(-1) !== '÷'
+        ) {
+          math.innerText += event.key
+          input.innerText += event.key
+        }
+      }
+      else if (event.key === '*') {
+        multiply.style.background = 'rgb(236, 236, 243)'
+        multiply.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+          input.innerText = answer.innerText
+        }
+        if (
+          input.innerText.slice(-1) !== '+' &&
+          input.innerText.slice(-1) !== '-' &&
+          input.innerText.slice(-1) !== '×' &&
+          input.innerText.slice(-1) !== '÷'
+        ) {
+          math.innerText += event.key
+          input.innerText += '×'
+        }
+      }
+      else if (event.key === '/') {
+        divide.style.background = 'rgb(236, 236, 243)'
+        divide.style.boxShadow = `0px 0px 0px rgba(0, 0, 0, 0.4),
+        0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 1px 1px 2px rgba(0, 0, 0, 0.4)`
+        if (input.innerText.includes('=')) {
+          input.innerText = input.innerText.substr(0, input.innerText.length - 1)
+          input.innerText = answer.innerText
+        }
+        if (
+          input.innerText.slice(-1) !== '+' &&
+          input.innerText.slice(-1) !== '-' &&
+          input.innerText.slice(-1) !== '×' &&
+          input.innerText.slice(-1) !== '÷'
+        ) {
+          math.innerText += event.key
+          input.innerText += '÷'
+        }
+      }
     }
+
+    document.onkeyup = () => {
+      if (event.key === 'Enter') {
+        equals.style.background = 'rgb(255, 255, 255)'
+        equals.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)` }
+      else if (event.key === 'Escape' || event.key === 'Delete') {
+        escape.style.background = 'rgb(255, 255, 255)'
+        escape.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === 'Backspace') {
+        backspace.style.background = 'rgb(255, 255, 255)'
+        backspace.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '1') {
+        one.style.background = 'rgb(255, 255, 255)'
+        one.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '2') {
+        two.style.background = 'rgb(255, 255, 255)'
+        two.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '3') {
+        three.style.background = 'rgb(255, 255, 255)'
+        three.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '4') {
+        four.style.background = 'rgb(255, 255, 255)'
+        four.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '5') {
+        five.style.background = 'rgb(255, 255, 255)'
+        five.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '6') {
+        six.style.background = 'rgb(255, 255, 255)'
+        six.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '7') {
+        seven.style.background = 'rgb(255, 255, 255)'
+        seven.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '8') {
+        eight.style.background = 'rgb(255, 255, 255)'
+        eight.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '9') {
+        nine.style.background = 'rgb(255, 255, 255)'
+        nine.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '0') {
+        zero.style.background = 'rgb(255, 255, 255)'
+        zero.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '.') {
+        dot.style.background = 'rgb(255, 255, 255)'
+        dot.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '+') {
+        plus.style.background = 'rgb(255, 255, 255)'
+        plus.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '-') {
+        minus.style.background = 'rgb(255, 255, 255)'
+        minus.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '*') {
+        multiply.style.background = 'rgb(255, 255, 255)'
+        multiply.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+      else if (event.key === '/') {
+        divide.style.background = 'rgb(255, 255, 255)'
+        divide.style.boxShadow = `1px 1px 2px rgba(0, 0, 0, 0.4),
+        -1px -1px 4px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(236, 236, 243, 0.9),
+        inset 0px 0px 0px rgba(0, 0, 0, 0.4)`
+      }
+    }
+
   </script>
 </body>
 
